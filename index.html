@@ -255,8 +255,11 @@
                             </div>
 
                             <div class="info-block full-width" id="block-cast">
-                                <div class="info-label"><i class="bi bi-people-fill"></i> Cast</div>
-                                <div class="actors-row" id="actors-val"></div>
+                                <div class="info-label"><i class="bi bi-people-fill"></i> Famous Cast</div>
+                                <!-- New Cast Carousel Container -->
+                                <div class="cast-carousel" id="cast-carousel">
+                                    <!-- Populated by JS -->
+                                </div>
                             </div>
 
                             <div class="info-block full-width" id="block-plot">
@@ -299,9 +302,37 @@
             <div class="footer-brand">
                 <i class="bi bi-camera-reels-fill"></i> FilmFinder
             </div>
-            <p class="footer-sub">Data powered by <a href="https://www.omdbapi.com/" target="_blank">OMDb API</a></p>
+            <p class="footer-sub">Data powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB</a> &amp; <a href="https://www.omdbapi.com/" target="_blank">OMDb</a></p>
         </div>
     </footer>
+
+    <!-- ===== MODALS ===== -->
+    <!-- Trailer Modal -->
+    <div class="modal-overlay d-none" id="trailer-modal" onclick="closeTrailerModal(event)">
+        <div class="modal-content video-modal">
+            <button class="modal-close" onclick="closeTrailerModal(event)"><i class="bi bi-x-lg"></i></button>
+            <div class="video-wrapper">
+                <iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actor Filmography Modal -->
+    <div class="modal-overlay d-none" id="actor-modal" onclick="closeActorModal(event)">
+        <div class="modal-content actor-modal-content">
+            <button class="modal-close" onclick="closeActorModal(event)"><i class="bi bi-x-lg"></i></button>
+            <div class="actor-header">
+                <img id="modal-actor-img" src="" alt="Actor" class="modal-actor-img">
+                <div class="modal-actor-info">
+                    <h2 id="modal-actor-name">Actor Name</h2>
+                    <p class="modal-actor-sub">Known For</p>
+                </div>
+            </div>
+            <div class="actor-movies-grid" id="actor-movies-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
 
     <script src="index.js"></script>
     <script src="app.js"></script>

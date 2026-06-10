@@ -916,7 +916,244 @@ body.light-mode .actor-pill:hover {
 
 .footer-sub a:hover { text-decoration: underline; }
 
+/* ─── Cast Carousel ──────────────────────────────────────────── */
+.cast-carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(229,9,20,0.3) transparent;
+}
+
+.cast-carousel::-webkit-scrollbar { height: 6px; }
+.cast-carousel::-webkit-scrollbar-track { background: transparent; }
+.cast-carousel::-webkit-scrollbar-thumb {
+    background: rgba(229,9,20,0.3);
+    border-radius: 10px;
+}
+
+.cast-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 90px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cast-card:hover { transform: translateY(-4px); }
+
+.cast-img-wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    transition: var(--transition);
+}
+
+.cast-card:hover .cast-img-wrapper {
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px rgba(229,9,20,0.3);
+}
+
+.cast-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cast-info { text-align: center; }
+.cast-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+.cast-role {
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.1;
+}
+
+/* ─── Modals ─────────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease both;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 100px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05);
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--accent);
+    transform: scale(1.1);
+}
+
+/* Video Modal Specific */
+.video-modal {
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+}
+
+/* Actor Modal Specific */
+.actor-modal-content {
+    padding: 32px;
+    max-width: 800px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.actor-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.modal-actor-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+}
+
+.modal-actor-info h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.modal-actor-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.actor-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 16px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(229,9,20,0.3) transparent;
+}
+
+.actor-movies-grid::-webkit-scrollbar { width: 6px; }
+.actor-movies-grid::-webkit-scrollbar-track { background: transparent; }
+.actor-movies-grid::-webkit-scrollbar-thumb { background: rgba(229,9,20,0.3); border-radius: 10px; }
+
+.actor-movie-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.actor-movie-card:hover { transform: translateY(-4px); }
+
+.actor-movie-poster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.actor-movie-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .actor-modal-content { padding: 20px; }
+    .actor-movies-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; }
+    .modal-actor-img { width: 60px; height: 60px; }
+    .modal-actor-info h2 { font-size: 1.4rem; }
+}
+
+/* ─── Light Mode Overrides ──────────────────────────────────── */
+
+/* ... (Keep existing light mode overrides here) ... */
 @media (max-width: 768px) {
     .navbar { padding: 14px 20px; }
     .nav-links { display: none; }
@@ -1478,3 +1715,33 @@ body.light-mode .site-footer {
 }
 body.light-mode .footer-brand { color: rgba(0,0,0,0.35); }
 body.light-mode .footer-sub   { color: rgba(0,0,0,0.45); }
+
+/* Modals Light Mode */
+body.light-mode .modal-overlay {
+    background: rgba(255,255,255,0.85);
+}
+body.light-mode .modal-content {
+    background: #fff;
+    border-color: rgba(0,0,0,0.1);
+    box-shadow: 0 30px 100px rgba(0,0,0,0.15);
+}
+body.light-mode .modal-close {
+    background: rgba(0,0,0,0.05);
+    color: #12121f;
+}
+body.light-mode .modal-close:hover {
+    background: var(--accent);
+    color: #fff;
+}
+body.light-mode .modal-actor-info h2 { color: #12121f; }
+body.light-mode .actor-movie-title { color: rgba(0,0,0,0.8); }
+
+/* Cast Light Mode */
+body.light-mode .cast-img-wrapper {
+    background: #fff;
+    border-color: rgba(0,0,0,0.1);
+}
+body.light-mode .cast-name { color: #12121f; }
+body.light-mode .cast-carousel::-webkit-scrollbar-thumb {
+    background: rgba(229,9,20,0.15);
+}
