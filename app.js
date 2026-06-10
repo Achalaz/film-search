@@ -103,7 +103,13 @@ window.addEventListener('scroll', () => {
 
 /* ─── Quick Search from Suggestion Pills ────────────────────── */
 window.quickSearch = function(title) {
-    document.getElementById('movie').value = title;
+    const input = document.getElementById('movie');
+    const clearBtn = document.getElementById('clear-btn');
+    if (input) input.value = title;
+    if (clearBtn) clearBtn.style.display = 'flex';
+    // Close dropdown if open
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    if (dropdown) dropdown.classList.remove('open');
     doSearch();
 };
 
@@ -111,6 +117,10 @@ window.quickSearch = function(title) {
 /* ─── Main Search Function ──────────────────────────────────── */
 window.doSearch = function() {
     const movieName = document.getElementById('movie').value.trim();
+    // Close autocomplete dropdown
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    if (dropdown) dropdown.classList.remove('open');
+
     if (!movieName) {
         shakeInput();
         return;
@@ -370,10 +380,213 @@ window.addEventListener('scroll', () => {
 
 /* ─── Enter key on search input ─────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-    const input = document.getElementById('movie');
-    if (input) {
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') doSearch();
-        });
+    const input     = document.getElementById('movie');
+    const dropdown  = document.getElementById('autocomplete-dropdown');
+    const inner     = document.getElementById('autocomplete-inner');
+    const clearBtn  = document.getElementById('clear-btn');
+
+    if (!input) return;
+
+    /* ── Debounce helper ── */
+    let debounceTimer = null;
+    function debounce(fn, delay) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(fn, delay);
     }
+
+    /* ── Keyboard navigation state ── */
+    let activeIdx = -1;
+
+    /* ── Show / hide clear button ── */
+    function syncClearBtn() {
+        if (clearBtn) clearBtn.style.display = input.value ? 'flex' : 'none';
+    }
+
+    /* ── Highlight matched query in title ── */
+    function highlight(text, query) {
+        if (!query) return text;
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+    }
+
+    /* ── Open dropdown ── */
+    function openDropdown() {
+        dropdown.classList.add('open');
+        // Restart animation
+        dropdown.style.animation = 'none';
+        dropdown.offsetHeight;
+        dropdown.style.animation = '';
+    }
+
+    /* ── Close dropdown ── */
+    function closeDropdown() {
+        dropdown.classList.remove('open');
+        activeIdx = -1;
+    }
+
+    /* ── Render loading state ── */
+    function renderLoading() {
+        inner.innerHTML = `
+            <div class="ac-loading">
+                <div class="ac-spinner"></div>
+                Searching films…
+            </div>`;
+        openDropdown();
+    }
+
+    /* ── Render results ── */
+    function renderResults(movies, query) {
+        inner.innerHTML = '';
+
+        if (!movies || movies.length === 0) {
+            inner.innerHTML = `
+                <div class="ac-empty">
+                    <i class="bi bi-film"></i>
+                    No films found for "<strong>${query}</strong>"
+                </div>`;
+            openDropdown();
+            return;
+        }
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'autocomplete-header';
+        header.innerHTML = `<i class="bi bi-lightning-fill"></i> ${movies.length} result${movies.length !== 1 ? 's' : ''} found`;
+        inner.appendChild(header);
+
+        movies.forEach((movie, i) => {
+            if (i > 0) {
+                const div = document.createElement('div');
+                div.className = 'ac-divider';
+                inner.appendChild(div);
+            }
+
+            const item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.setAttribute('role', 'option');
+            item.dataset.title = movie.Title;
+
+            // Poster
+            const posterHTML = movie.Poster && movie.Poster !== 'N/A'
+                ? `<img class="ac-poster" src="${movie.Poster}" alt="${movie.Title} poster" loading="lazy">`
+                : `<div class="ac-poster-placeholder"><i class="bi bi-film"></i></div>`;
+
+            // Type label
+            const typeLabel = movie.Type ? movie.Type.replace('movie', 'Film').replace('series', 'Series') : '';
+
+            item.innerHTML = `
+                ${posterHTML}
+                <div class="ac-text">
+                    <div class="ac-title">${highlight(movie.Title, query)}</div>
+                    <div class="ac-meta">
+                        ${movie.Year ? `<span class="ac-year"><i class="bi bi-calendar3"></i>${movie.Year}</span>` : ''}
+                        ${typeLabel ? `<span class="ac-type">${typeLabel}</span>` : ''}
+                    </div>
+                </div>
+                <i class="bi bi-arrow-right ac-arrow"></i>`;
+
+            // Click to search
+            item.addEventListener('click', () => {
+                input.value = movie.Title;
+                syncClearBtn();
+                closeDropdown();
+                doSearch();
+            });
+
+            inner.appendChild(item);
+        });
+
+        openDropdown();
+        activeIdx = -1;
+    }
+
+    /* ── Fetch autocomplete suggestions ── */
+    function fetchSuggestions(query) {
+        if (!query || query.length < 2) {
+            closeDropdown();
+            return;
+        }
+
+        renderLoading();
+
+        const url = `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=movie&apikey=4ef17996`;
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                if (data && data.Response === 'True' && data.Search) {
+                    renderResults(data.Search.slice(0, 8), query);
+                } else {
+                    renderResults([], query);
+                }
+            })
+            .catch(() => closeDropdown());
+    }
+
+    /* ── Keyboard navigation ── */
+    input.addEventListener('keydown', e => {
+        const items = inner.querySelectorAll('.autocomplete-item');
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIdx = Math.min(activeIdx + 1, items.length - 1);
+            items.forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+            if (items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIdx = Math.max(activeIdx - 1, -1);
+            items.forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+            if (activeIdx === -1) input.focus();
+
+        } else if (e.key === 'Enter') {
+            if (activeIdx >= 0 && items[activeIdx]) {
+                const title = items[activeIdx].dataset.title;
+                input.value = title;
+                syncClearBtn();
+                closeDropdown();
+                doSearch();
+            } else {
+                closeDropdown();
+                doSearch();
+            }
+
+        } else if (e.key === 'Escape') {
+            closeDropdown();
+        }
+    });
+
+    /* ── Input event → debounced fetch ── */
+    input.addEventListener('input', () => {
+        syncClearBtn();
+        const q = input.value.trim();
+        if (!q) { closeDropdown(); return; }
+        debounce(() => fetchSuggestions(q), 280);
+    });
+
+    /* ── Close on outside click ── */
+    document.addEventListener('click', e => {
+        if (!dropdown.contains(e.target) && e.target !== input) {
+            closeDropdown();
+        }
+    });
+
+    /* ── Reopen on focus if has value ── */
+    input.addEventListener('focus', () => {
+        if (input.value.trim().length >= 2) {
+            if (inner.querySelector('.autocomplete-item')) {
+                openDropdown();
+            }
+        }
+    });
 });
+
+
+/* ─── Clear search input ─────────────────────────────────────── */
+window.clearSearch = function() {
+    const input = document.getElementById('movie');
+    const clearBtn = document.getElementById('clear-btn');
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    if (input) { input.value = ''; input.focus(); }
+    if (clearBtn) clearBtn.style.display = 'none';
+    if (dropdown) dropdown.classList.remove('open');
+};
