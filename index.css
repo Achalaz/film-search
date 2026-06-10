@@ -819,6 +819,39 @@ body.light-mode {
     font-weight: 300;
 }
 
+/* ─── Trailer Button ───────────────────────────────────────────── */
+.trailer-btn {
+    background: linear-gradient(135deg, rgba(229,9,20,0.1) 0%, rgba(229,9,20,0.2) 100%);
+    border: 1px solid rgba(229,9,20,0.3);
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.trailer-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(229,9,20,0.4);
+}
+
+body.light-mode .trailer-btn {
+    background: rgba(229,9,20,0.1);
+}
+body.light-mode .trailer-btn:hover {
+    background: var(--accent);
+}
+
 /* ─── Actors Row ─────────────────────────────────────────────── */
 .actors-row {
     display: flex;
@@ -835,14 +868,24 @@ body.light-mode {
     padding: 4px 12px;
     border-radius: 50px;
     transition: var(--transition);
-    cursor: default;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .actor-pill:hover {
-    background: rgba(229,9,20,0.12);
-    border-color: rgba(229,9,20,0.3);
-    color: #fff;
+    background: rgba(245,197,24,0.12);
+    border-color: rgba(245,197,24,0.4);
+    color: var(--gold);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245,197,24,0.15);
+}
+
+body.light-mode .actor-pill:hover {
+    background: rgba(245,197,24,0.15);
+    border-color: var(--gold);
+    color: #b38f00;
 }
 
 /* ─── Footer ─────────────────────────────────────────────────── */

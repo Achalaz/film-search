@@ -200,10 +200,15 @@
                     <!-- RIGHT: Info -->
                     <div class="info-col">
 
-                        <!-- Now Showing badge -->
-                        <div class="info-eyebrow">
-                            <span class="now-badge"><span class="live-dot"></span>Now Showing</span>
-                            <span class="rated-badge" id="rated-badge"></span>
+                        <!-- Now Showing badge & Trailer -->
+                        <div class="info-eyebrow" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span class="now-badge"><span class="live-dot"></span>Now Showing</span>
+                                <span class="rated-badge" id="rated-badge"></span>
+                            </div>
+                            <button class="trailer-btn d-none" id="trailer-btn" title="Watch Trailer on YouTube">
+                                <i class="bi bi-play-circle-fill"></i> Trailer
+                            </button>
                         </div>
 
                         <!-- Title -->

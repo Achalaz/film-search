@@ -290,14 +290,45 @@ function renderMovie(data) {
     const actorsEl = document.getElementById('actors-val');
     actorsEl.innerHTML = '';
     if (data.Actors && data.Actors !== 'N/A') {
-        data.Actors.split(',').forEach(actor => {
+        const actors = data.Actors.split(',');
+        actors.forEach((actor, index) => {
+            const name = actor.trim();
             const pill = document.createElement('span');
             pill.className = 'actor-pill';
-            pill.textContent = actor.trim();
+            pill.title = `Search movies with ${name}`;
+            
+            // Add a star to the first actor (Lead / Famous)
+            if (index === 0) {
+                pill.innerHTML = `<i class="bi bi-star-fill text-warning"></i> ${name}`;
+            } else {
+                pill.textContent = name;
+            }
+            
+            // Click to search actor's movies on Google
+            pill.addEventListener('click', () => {
+                const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(name + ' movies')}`;
+                window.open(searchUrl, '_blank');
+            });
+            
             actorsEl.appendChild(pill);
         });
     } else {
         actorsEl.textContent = '—';
+    }
+
+    // ── Trailer Button ──
+    const trailerBtn = document.getElementById('trailer-btn');
+    if (trailerBtn) {
+        if (data.Title && data.Title !== 'N/A') {
+            trailerBtn.classList.remove('d-none');
+            const yearStr = data.Year && data.Year !== 'N/A' ? ` ${data.Year}` : '';
+            const searchQ = `${data.Title}${yearStr} official trailer`;
+            trailerBtn.onclick = () => {
+                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(searchQ)}`, '_blank');
+            };
+        } else {
+            trailerBtn.classList.add('d-none');
+        }
     }
 
     // ── Box Office ──
