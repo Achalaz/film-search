@@ -640,7 +640,8 @@ window.openTrailerModal = function(youtubeKey) {
     const modal = document.getElementById('trailer-modal');
     const iframe = document.getElementById('trailer-iframe');
     if (modal && iframe) {
-        iframe.src = `https://www.youtube.com/embed/${youtubeKey}?autoplay=1`;
+        // Use youtube-nocookie and add parameters to hide branding and related videos
+        iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeKey}?autoplay=1&modestbranding=1&rel=0&showinfo=0`;
         modal.classList.remove('d-none');
         document.body.style.overflow = 'hidden'; // prevent background scrolling
     }
