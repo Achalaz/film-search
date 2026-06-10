@@ -1,3 +1,4 @@
+/* ===== index.js — original search function (kept for compatibility) ===== */
 function search() {
     console.log("searching...");
 
@@ -34,10 +35,10 @@ function search() {
         document.getElementById("poster").src = posterUrl;
 
         // Director
-        document.getElementById("director").innerHTML = "Director: " + (data.Director || "Unknown");
+        document.getElementById("director").innerHTML = data.Director || "Unknown";
 
-        // ✅ Plot (added)
-        document.getElementById("plot").innerHTML = "Plot: " + (data.Plot || "No plot available");
+        // Plot
+        document.getElementById("plot").innerHTML = data.Plot || "No plot available";
     };
 
     http.onerror = function() {
