@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 FilmFinder – Discover Movies</title>
+    <meta name="description" content="Search any movie and instantly discover its full details — cast, plot, ratings, awards, box office and more.">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <!-- ===== ANIMATED BACKGROUND PARTICLES ===== -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="nav-logo"><i class="bi bi-camera-reels-fill"></i></div>
+            <span>FilmFinder</span>
+        </div>
+        <div class="nav-links">
+            <span class="nav-tag"><i class="bi bi-star-fill"></i> IMDb</span>
+            <span class="nav-tag"><i class="bi bi-film"></i> HD</span>
+            <span class="nav-tag"><i class="bi bi-award-fill"></i> Oscar</span>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span class="pulse-dot"></span>
+                Live Search Powered by OMDb
+            </div>
+
+            <h1 class="hero-title">
+                Discover Your Next<br>
+                <span class="gradient-text typewriter" id="typewriter-text">Favourite Film</span>
+            </h1>
+
+            <p class="hero-sub">
+                Search millions of movies — get posters, cast, ratings, awards &amp; box office instantly.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="search-wrapper">
+                <div class="search-box" id="search-box">
+                    <i class="bi bi-search search-icon"></i>
+                    <input
+                        id="movie"
+                        type="text"
+                        class="search-input"
+                        placeholder="e.g. Interstellar, The Dark Knight…"
+                        onkeydown="if(event.key==='Enter') doSearch()"
+                        autocomplete="off"
+                    >
+                    <button class="search-btn" onclick="doSearch()" id="search-button">
+                        <span class="btn-text"><i class="bi bi-lightning-fill"></i> Search</span>
+                        <span class="btn-ripple"></span>
+                    </button>
+                </div>
+
+                <!-- Quick search suggestions -->
+                <div class="search-suggestions">
+                    <span class="suggestion-label">Popular:</span>
+                    <button class="suggestion-pill" onclick="quickSearch('Inception')">Inception</button>
+                    <button class="suggestion-pill" onclick="quickSearch('Avengers')">Avengers</button>
+                    <button class="suggestion-pill" onclick="quickSearch('The Godfather')">The Godfather</button>
+                    <button class="suggestion-pill" onclick="quickSearch('Interstellar')">Interstellar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating decorative elements -->
+        <div class="float-el el-1"><i class="bi bi-star-fill"></i><span>9.2 IMDb</span></div>
+        <div class="float-el el-2"><i class="bi bi-trophy-fill"></i><span>7 Oscars</span></div>
+        <div class="float-el el-3"><i class="bi bi-film"></i><span>4K UHD</span></div>
+        <div class="float-el el-4"><i class="bi bi-heart-fill"></i><span>Top Rated</span></div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-hint" id="scroll-hint">
+            <i class="bi bi-chevron-double-down"></i>
+        </div>
+    </section>
+
+    <!-- ===== RESULT SECTION ===== -->
+    <section class="result-section" id="result-section">
+        <div class="result-container">
+
+            <!-- Loading Skeleton -->
+            <div id="loading-state" class="loading-state d-none">
+                <div class="skeleton-card">
+                    <div class="skeleton-poster shimmer"></div>
+                    <div class="skeleton-info">
+                        <div class="skeleton-line shimmer" style="width:40%;height:14px;margin-bottom:16px;"></div>
+                        <div class="skeleton-line shimmer" style="width:75%;height:32px;margin-bottom:12px;"></div>
+                        <div class="skeleton-chips">
+                            <div class="skeleton-chip shimmer"></div>
+                            <div class="skeleton-chip shimmer"></div>
+                            <div class="skeleton-chip shimmer"></div>
+                            <div class="skeleton-chip shimmer"></div>
+                        </div>
+                        <div class="skeleton-line shimmer" style="width:100%;height:80px;margin-top:20px;"></div>
+                        <div class="skeleton-line shimmer" style="width:100%;height:80px;margin-top:12px;"></div>
+                        <div class="skeleton-line shimmer" style="width:100%;height:120px;margin-top:12px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="error-state d-none">
+                <div class="error-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                <h3 class="error-title">Film Not Found</h3>
+                <p class="error-msg" id="error-msg">Try searching with a different title.</p>
+                <button class="retry-btn" onclick="document.getElementById('movie').focus()">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>Try Again
+                </button>
+            </div>
+
+            <!-- Movie Card -->
+            <div id="movie-card" class="movie-card d-none">
+
+                <!-- Top gradient bar -->
+                <div class="card-top-bar"></div>
+
+                <div class="card-body-inner">
+
+                    <!-- LEFT: Poster -->
+                    <div class="poster-col">
+                        <div class="poster-frame">
+                            <img id="poster" src="" alt="Movie poster" class="poster-img">
+                            <div class="poster-overlay">
+                                <button class="play-btn"><i class="bi bi-play-fill"></i></button>
+                            </div>
+                            <div class="poster-glow"></div>
+                            <div class="poster-corner-badge" id="rating-badge"></div>
+                        </div>
+
+                        <!-- Score bars -->
+                        <div class="score-section">
+                            <div class="score-item">
+                                <div class="score-label">
+                                    <span><i class="bi bi-star-fill text-warning"></i> IMDb</span>
+                                    <span id="imdb-score-label">—</span>
+                                </div>
+                                <div class="score-bar-track">
+                                    <div class="score-bar imdb-bar" id="imdb-bar" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-label">
+                                    <span><i class="bi bi-circle-fill text-danger"></i> Rotten T.</span>
+                                    <span id="rt-score-label">—</span>
+                                </div>
+                                <div class="score-bar-track">
+                                    <div class="score-bar rt-bar" id="rt-bar" style="width:0%"></div>
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-label">
+                                    <span><i class="bi bi-hexagon-fill" style="color:#6b21a8"></i> Meta</span>
+                                    <span id="meta-score-label">—</span>
+                                </div>
+                                <div class="score-bar-track">
+                                    <div class="score-bar meta-bar" id="meta-bar" style="width:0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Info -->
+                    <div class="info-col">
+
+                        <!-- Now Showing badge -->
+                        <div class="info-eyebrow">
+                            <span class="now-badge"><span class="live-dot"></span>Now Showing</span>
+                            <span class="rated-badge" id="rated-badge"></span>
+                        </div>
+
+                        <!-- Title -->
+                        <h1 id="title" class="movie-title"></h1>
+
+                        <!-- Tagline -->
+                        <p id="tagline" class="movie-tagline d-none"></p>
+
+                        <!-- Meta chips row -->
+                        <div class="meta-row" id="meta-row">
+                            <span class="meta-chip chip-year" id="year-chip">
+                                <i class="bi bi-calendar3"></i>
+                                <span id="year-val">—</span>
+                            </span>
+                            <span class="meta-chip chip-genre" id="genre-chip">
+                                <i class="bi bi-tag-fill"></i>
+                                <span id="genre-val">—</span>
+                            </span>
+                            <span class="meta-chip chip-runtime" id="runtime-chip">
+                                <i class="bi bi-clock-fill"></i>
+                                <span id="runtime-val">—</span>
+                            </span>
+                            <span class="meta-chip chip-lang" id="lang-chip">
+                                <i class="bi bi-translate"></i>
+                                <span id="lang-val">—</span>
+                            </span>
+                            <span class="meta-chip chip-country" id="country-chip">
+                                <i class="bi bi-globe2"></i>
+                                <span id="country-val">—</span>
+                            </span>
+                        </div>
+
+                        <!-- Info grid -->
+                        <div class="info-grid">
+
+                            <div class="info-block" id="block-director">
+                                <div class="info-label"><i class="bi bi-person-video3"></i> Director</div>
+                                <div class="info-value" id="director">—</div>
+                            </div>
+
+                            <div class="info-block" id="block-writer">
+                                <div class="info-label"><i class="bi bi-pencil-fill"></i> Writer</div>
+                                <div class="info-value" id="writer-val">—</div>
+                            </div>
+
+                            <div class="info-block full-width" id="block-cast">
+                                <div class="info-label"><i class="bi bi-people-fill"></i> Cast</div>
+                                <div class="actors-row" id="actors-val"></div>
+                            </div>
+
+                            <div class="info-block full-width" id="block-plot">
+                                <div class="info-label"><i class="bi bi-chat-quote-fill"></i> Plot</div>
+                                <div class="plot-text" id="plot">—</div>
+                            </div>
+
+                            <div class="info-block" id="block-boxoffice">
+                                <div class="info-label"><i class="bi bi-cash-stack"></i> Box Office</div>
+                                <div class="info-value highlight-gold" id="boxoffice-val">—</div>
+                            </div>
+
+                            <div class="info-block" id="block-awards">
+                                <div class="info-label"><i class="bi bi-trophy-fill"></i> Awards</div>
+                                <div class="info-value" id="awards-val">—</div>
+                            </div>
+
+                            <div class="info-block" id="block-released">
+                                <div class="info-label"><i class="bi bi-calendar-event-fill"></i> Released</div>
+                                <div class="info-value" id="released-val">—</div>
+                            </div>
+
+                            <div class="info-block" id="block-production">
+                                <div class="info-label"><i class="bi bi-building"></i> Production</div>
+                                <div class="info-value" id="production-val">—</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <i class="bi bi-camera-reels-fill"></i> FilmFinder
+            </div>
+            <p class="footer-sub">Data powered by <a href="https://www.omdbapi.com/" target="_blank">OMDb API</a></p>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
