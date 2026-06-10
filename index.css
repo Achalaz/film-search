@@ -1,5 +1,5 @@
 /* ============================================================
-   FilmFinder – index.css  |  Cinematic Premium Dark Theme
+   FilmFinder – index.css  |  Cinematic Dark & Light Theme
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
@@ -27,14 +27,32 @@
     --shadow-glow: 0 0 40px rgba(229,9,20,0.15);
 }
 
+/* ─── Light Mode Variables ──────────────────────────────────── */
+body.light-mode {
+    --dark-bg:    #f0f2f8;
+    --card-bg:    #ffffff;
+    --card-bg2:   #f7f8fc;
+    --glass:      rgba(0,0,0,0.04);
+    --glass-b:    rgba(0,0,0,0.08);
+    --muted:      rgba(0,0,0,0.45);
+    --muted2:     rgba(0,0,0,0.7);
+    --shadow-glow: 0 0 40px rgba(229,9,20,0.1);
+}
+
 html { scroll-behavior: smooth; }
 
+/* ─── Mode Transition ──────────────────────────────────────── */
 body {
     font-family: 'Outfit', sans-serif;
     background: var(--dark-bg);
     color: #f0f0f0;
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+body.light-mode {
+    color: #12121f;
 }
 
 .d-none { display: none !important; }
@@ -1144,3 +1162,276 @@ body {
     color: #fff;
     background: rgba(255,255,255,0.1);
 }
+
+/* ─── Theme Toggle Button ────────────────────────────────────── */
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass);
+    border: 1.5px solid var(--glass-b);
+    border-radius: 50px;
+    padding: 7px 16px 7px 10px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted2);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.theme-toggle:hover {
+    background: rgba(229,9,20,0.1);
+    border-color: rgba(229,9,20,0.35);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(229,9,20,0.15);
+}
+
+.theme-toggle-track {
+    width: 34px;
+    height: 19px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    position: relative;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.theme-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--muted2);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;
+}
+
+body.light-mode .theme-toggle-track {
+    background: rgba(229,9,20,0.15);
+    border-color: rgba(229,9,20,0.3);
+}
+
+body.light-mode .theme-toggle-thumb {
+    transform: translateX(15px);
+    background: var(--accent);
+}
+
+.theme-toggle-icon {
+    font-size: 1rem;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+body.light-mode .theme-toggle-icon { transform: rotate(180deg); }
+
+/* ─── Light Mode Overrides ──────────────────────────────────── */
+
+/* Navbar */
+body.light-mode .navbar {
+    background: rgba(240,242,248,0.88) !important;
+    border-bottom-color: rgba(0,0,0,0.07);
+}
+body.light-mode .nav-brand { color: #12121f; }
+body.light-mode .nav-tag {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.1);
+    color: rgba(0,0,0,0.6);
+}
+
+/* Hero */
+body.light-mode .hero-section {
+    background:
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(229,9,20,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.08) 0%, transparent 60%),
+        url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+}
+body.light-mode .hero-overlay {
+    background: linear-gradient(160deg,
+        rgba(240,242,248,0.72) 0%,
+        rgba(240,242,248,0.85) 50%,
+        rgba(240,242,248,1) 100%
+    );
+}
+body.light-mode .hero-title { color: #12121f; }
+body.light-mode .hero-sub   { color: rgba(0,0,0,0.5); }
+body.light-mode .hero-eyebrow {
+    background: rgba(229,9,20,0.07);
+    border-color: rgba(229,9,20,0.2);
+    color: rgba(0,0,0,0.6);
+}
+
+/* Float elements */
+body.light-mode .float-el {
+    background: rgba(255,255,255,0.75);
+    border-color: rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.7);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Scroll hint */
+body.light-mode .scroll-hint { color: rgba(0,0,0,0.35); }
+
+/* Search box */
+body.light-mode .search-box {
+    background: rgba(255,255,255,0.85);
+    border-color: rgba(0,0,0,0.12);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+body.light-mode .search-box:focus-within {
+    background: #fff;
+    border-color: rgba(229,9,20,0.45);
+    box-shadow: 0 0 0 4px rgba(229,9,20,0.08), 0 8px 40px rgba(0,0,0,0.12);
+}
+body.light-mode .search-input { color: #12121f; }
+body.light-mode .search-input::placeholder { color: rgba(0,0,0,0.35); }
+body.light-mode .search-icon { color: rgba(0,0,0,0.4); }
+body.light-mode .search-box:focus-within .search-icon { color: var(--accent); }
+
+/* Suggestion pills */
+body.light-mode .suggestion-label { color: rgba(0,0,0,0.45); }
+body.light-mode .suggestion-pill {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.1);
+    color: rgba(0,0,0,0.6);
+}
+body.light-mode .suggestion-pill:hover {
+    background: rgba(229,9,20,0.08);
+    border-color: rgba(229,9,20,0.3);
+    color: var(--accent);
+}
+
+/* Clear button */
+body.light-mode .clear-btn { color: rgba(0,0,0,0.3); }
+body.light-mode .clear-btn:hover {
+    color: #12121f;
+    background: rgba(0,0,0,0.07);
+}
+
+/* Result section */
+body.light-mode .result-section { background: #eef0f7; }
+
+/* Skeleton */
+body.light-mode .skeleton-card {
+    background: #fff;
+    border-color: rgba(0,0,0,0.06);
+}
+body.light-mode .skeleton-line,
+body.light-mode .skeleton-chip,
+body.light-mode .skeleton-poster {
+    background: rgba(0,0,0,0.06);
+}
+body.light-mode .shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(0,0,0,0.04) 25%,
+        rgba(0,0,0,0.09) 50%,
+        rgba(0,0,0,0.04) 75%
+    );
+    background-size: 600px 100%;
+}
+
+/* Error state */
+body.light-mode .error-title { color: #12121f; }
+body.light-mode .error-msg   { color: rgba(0,0,0,0.5); }
+body.light-mode .retry-btn   { background: rgba(229,9,20,0.07); }
+
+/* Movie card */
+body.light-mode .movie-card {
+    background: #fff;
+    border-color: rgba(0,0,0,0.07);
+    box-shadow: 0 0 0 1px rgba(229,9,20,0.05), 0 20px 60px rgba(0,0,0,0.12);
+}
+body.light-mode .poster-col {
+    background: #f5f6fc;
+    border-right-color: rgba(0,0,0,0.06);
+}
+body.light-mode .info-col { background: #fff; }
+
+/* Info blocks */
+body.light-mode .info-block {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(0,0,0,0.07);
+}
+body.light-mode .info-block:hover {
+    background: rgba(229,9,20,0.04);
+    border-color: rgba(229,9,20,0.15);
+}
+body.light-mode .info-value     { color: rgba(0,0,0,0.75); }
+body.light-mode .plot-text      { color: rgba(0,0,0,0.55); }
+body.light-mode .movie-title    { color: #12121f; }
+body.light-mode .movie-tagline  { color: rgba(180,100,0,0.75); }
+body.light-mode .now-badge {
+    background: rgba(229,9,20,0.07);
+    border-color: rgba(229,9,20,0.2);
+}
+body.light-mode .rated-badge {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.1);
+    color: rgba(0,0,0,0.6);
+}
+
+/* Score bars track */
+body.light-mode .score-bar-track { background: rgba(0,0,0,0.07); }
+body.light-mode .score-label      { color: rgba(0,0,0,0.6); }
+
+/* Actor pills */
+body.light-mode .actor-pill {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.1);
+    color: rgba(0,0,0,0.7);
+}
+body.light-mode .actor-pill:hover {
+    background: rgba(229,9,20,0.08);
+    border-color: rgba(229,9,20,0.25);
+    color: var(--accent);
+}
+
+/* Poster corner badge */
+body.light-mode .poster-corner-badge {
+    background: rgba(255,255,255,0.9);
+}
+
+/* Autocomplete dropdown */
+body.light-mode .autocomplete-dropdown {
+    background: rgba(255,255,255,0.98);
+    border-color: rgba(229,9,20,0.2);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(229,9,20,0.08);
+}
+body.light-mode .autocomplete-item:hover,
+body.light-mode .autocomplete-item.active {
+    background: rgba(229,9,20,0.05);
+    border-color: rgba(229,9,20,0.15);
+}
+body.light-mode .ac-title  { color: rgba(0,0,0,0.85); }
+body.light-mode .ac-title mark { color: #c0060f; }
+body.light-mode .ac-meta   { color: rgba(0,0,0,0.4); }
+body.light-mode .ac-year   { color: rgba(160,90,0,0.7); }
+body.light-mode .ac-loading { color: rgba(0,0,0,0.4); }
+body.light-mode .ac-empty   { color: rgba(0,0,0,0.4); }
+body.light-mode .ac-divider { background: rgba(0,0,0,0.05); }
+body.light-mode .autocomplete-header { color: rgba(0,0,0,0.4); }
+body.light-mode .ac-poster-placeholder {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.2);
+}
+body.light-mode .autocomplete-inner {
+    scrollbar-color: rgba(229,9,20,0.2) transparent;
+}
+body.light-mode .autocomplete-inner::-webkit-scrollbar-thumb {
+    background: rgba(229,9,20,0.2);
+}
+
+/* Footer */
+body.light-mode .site-footer {
+    border-top-color: rgba(0,0,0,0.07);
+    background: #eef0f7;
+}
+body.light-mode .footer-brand { color: rgba(0,0,0,0.35); }
+body.light-mode .footer-sub   { color: rgba(0,0,0,0.45); }

@@ -11,6 +11,44 @@
     let particles = [];
     let W, H;
 
+    /* ─── Theme Toggle Logic ─── */
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    // Check local storage for theme preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('bi-moon-stars-fill');
+            themeIcon.classList.add('bi-sun-fill');
+        }
+    }
+    
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            
+            // Update icon
+            if (themeIcon) {
+                if (isLight) {
+                    themeIcon.classList.remove('bi-moon-stars-fill');
+                    themeIcon.classList.add('bi-sun-fill');
+                } else {
+                    themeIcon.classList.remove('bi-sun-fill');
+                    themeIcon.classList.add('bi-moon-stars-fill');
+                }
+            }
+            
+            // Save preference
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            
+            // Update particle colors based on theme if needed, or re-init
+            // For now, we'll keep the particles the same, but maybe make them slightly darker in light mode
+        });
+    }
+
     function resize() {
         W = canvas.width  = window.innerWidth;
         H = canvas.height = window.innerHeight;
@@ -39,10 +77,15 @@
 
     function animate() {
         ctx.clearRect(0, 0, W, H);
+        
+        // Check if light mode is active for particle opacity
+        const isLightMode = document.body.classList.contains('light-mode');
+        const opacityMult = isLightMode ? 0.6 : 1; // Slightly dimmer particles in light mode
+        
         particles.forEach((p, i) => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = p.color + p.alpha + ')';
+            ctx.fillStyle = p.color + (p.alpha * opacityMult) + ')';
             ctx.fill();
             p.x += p.dx;
             p.y += p.dy;
