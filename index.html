@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Movie Search</title>
     <script src="index.js"></script>
 </head>
 <body>
-    <input id="movie">
-    <button id="search">Search</button>
+    <input id="movie" placeholder="Enter movie name">
+    <button onclick="search()">Search</button>
+    
+    <h1 id="title"></h1>
+    <img id="poster" src="" alt="Movie poster">
+    <p id="director"></p>
+    <p id="plot"></p>   <!-- ✅ Added for plot -->
 </body>
 </html>
