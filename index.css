@@ -1156,8 +1156,8 @@ body.light-mode .actor-pill:hover {
 /* ... (Keep existing light mode overrides here) ... */
 @media (max-width: 768px) {
     .navbar { padding: 14px 20px; }
-    .nav-links { display: none; }
-
+    .nav-tag { display: none; } /* Hide only the text tags, keep the theme toggle */
+    
     .float-el { display: none; }
 
     .hero-content { padding: 100px 20px 60px; }
@@ -1191,6 +1191,13 @@ body.light-mode .actor-pill:hover {
     .search-btn span:not(.btn-ripple) { display: none; }
     .search-btn { padding: 13px 16px; }
     .search-btn::after { content: '⚡'; font-size: 1rem; }
+    
+    .actor-movies-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px; }
+    .modal-actor-info h2 { font-size: 1.2rem; }
+    .modal-actor-sub { font-size: 0.75rem; }
+    .actor-modal-content { padding: 16px; gap: 16px; }
+    .cast-card { width: 75px; }
+    .cast-img-wrapper { width: 60px; height: 60px; }
 }
 
 /* ─── Autocomplete Dropdown ──────────────────────────────────── */
