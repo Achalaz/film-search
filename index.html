@@ -206,9 +206,14 @@
                                 <span class="now-badge"><span class="live-dot"></span>Now Showing</span>
                                 <span class="rated-badge" id="rated-badge"></span>
                             </div>
-                            <button class="trailer-btn d-none" id="trailer-btn" title="Watch Trailer on YouTube">
-                                <i class="bi bi-play-circle-fill"></i> Trailer
-                            </button>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <button class="trailer-btn d-none" id="trailer-btn" title="Watch Trailer on YouTube">
+                                    <i class="bi bi-play-circle-fill"></i> Trailer
+                                </button>
+                                <button class="watch-btn d-none" id="watch-btn" title="Watch Full Film">
+                                    <i class="bi bi-play-btn-fill"></i> Watch Film
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Title -->
@@ -313,6 +318,16 @@
             <button class="modal-close" onclick="closeTrailerModal(event)"><i class="bi bi-x-lg"></i></button>
             <div class="video-wrapper">
                 <iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Modal -->
+    <div class="modal-overlay d-none" id="movie-modal" onclick="closeMovieModal(event)">
+        <div class="modal-content video-modal">
+            <button class="modal-close" onclick="closeMovieModal(event)"><i class="bi bi-x-lg"></i></button>
+            <div class="video-wrapper">
+                <iframe id="movie-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
             </div>
         </div>
     </div>

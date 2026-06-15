@@ -325,6 +325,17 @@ function renderMovie(tmdb, omdb) {
         }
     }
 
+    // ── Watch Button ──
+    const watchBtn = document.getElementById('watch-btn');
+    if (watchBtn) {
+        if (tmdb.id) {
+            watchBtn.classList.remove('d-none');
+            watchBtn.onclick = () => openMovieModal(tmdb.id);
+        } else {
+            watchBtn.classList.add('d-none');
+        }
+    }
+
     // ── Box Office ──
     const bo = document.getElementById('boxoffice-val');
     if (omdb && omdb.BoxOffice && omdb.BoxOffice !== 'N/A') {
@@ -654,6 +665,32 @@ window.closeTrailerModal = function(e) {
     }
     const modal = document.getElementById('trailer-modal');
     const iframe = document.getElementById('trailer-iframe');
+    if (modal && iframe) {
+        modal.classList.add('d-none');
+        iframe.src = ''; // stop video
+        document.body.style.overflow = '';
+    }
+};
+
+// Movie Modal
+window.openMovieModal = function(tmdbId) {
+    const modal = document.getElementById('movie-modal');
+    const iframe = document.getElementById('movie-iframe');
+    if (modal && iframe) {
+        // Updated to vidsrc.me (or embed.su as alternative) since .xyz is blocked
+        iframe.src = `https://vidsrc.me/embed/movie?tmdb=${tmdbId}`;
+        modal.classList.remove('d-none');
+        document.body.style.overflow = 'hidden'; // prevent background scrolling
+    }
+};
+
+window.closeMovieModal = function(e) {
+    if (e) {
+        // Only close if clicking overlay or close button
+        if (!e.target.classList.contains('modal-overlay') && !e.target.closest('.modal-close')) return;
+    }
+    const modal = document.getElementById('movie-modal');
+    const iframe = document.getElementById('movie-iframe');
     if (modal && iframe) {
         modal.classList.add('d-none');
         iframe.src = ''; // stop video

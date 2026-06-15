@@ -852,6 +852,39 @@ body.light-mode .trailer-btn:hover {
     background: var(--accent);
 }
 
+/* ─── Watch Button ───────────────────────────────────────────── */
+.watch-btn {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.2) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.watch-btn:hover {
+    background: #10b981;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+body.light-mode .watch-btn {
+    background: rgba(16, 185, 129, 0.1);
+}
+body.light-mode .watch-btn:hover {
+    background: #10b981;
+}
+
 /* ─── Actors Row ─────────────────────────────────────────────── */
 .actors-row {
     display: flex;
