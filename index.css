@@ -681,8 +681,17 @@ body.light-mode {
 
 .info-eyebrow {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.info-eyebrow-group {
+    display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .now-badge {
@@ -1231,6 +1240,9 @@ body.light-mode .actor-pill:hover {
     .actor-modal-content { padding: 16px; gap: 16px; }
     .cast-card { width: 75px; }
     .cast-img-wrapper { width: 60px; height: 60px; }
+    
+    .info-eyebrow { flex-direction: column; align-items: flex-start; }
+    .movie-title { font-size: 1.8rem; word-break: break-word; }
 }
 
 /* ─── Autocomplete Dropdown ──────────────────────────────────── */
