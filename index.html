@@ -349,7 +349,75 @@
         </div>
     </div>
 
+    <!-- ===== DEEPSEEK AI CHATBOT WIDGET ===== -->
+
+    <!-- Floating Chat Button -->
+    <button class="chatbot-fab" id="chatbot-fab" aria-label="Open AI Movie Assistant" title="Ask AI about movies">
+        <div class="chatbot-fab-icon">
+            <i class="bi bi-robot" id="fab-icon"></i>
+        </div>
+        <div class="chatbot-fab-ripple"></div>
+        <div class="chatbot-notification-dot" id="chatbot-notif-dot"></div>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chatbot-window d-none" id="chatbot-window" role="dialog" aria-label="AI Movie Assistant">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">
+                    <i class="bi bi-robot"></i>
+                    <span class="chatbot-online-dot"></span>
+                </div>
+                <div class="chatbot-header-text">
+                    <div class="chatbot-header-name">CineAI</div>
+                    <div class="chatbot-header-sub">Powered by Pollinations AI · Free & Always on</div>
+                </div>
+            </div>
+            <div class="chatbot-header-actions">
+                <button class="chatbot-clear-btn" id="chatbot-clear-btn" title="Clear chat">
+                    <i class="bi bi-trash3"></i>
+                </button>
+                <button class="chatbot-close-btn" id="chatbot-close-btn" title="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="chatbot-messages" id="chatbot-messages">
+            <!-- Welcome message injected by JS -->
+        </div>
+
+        <!-- Suggested prompts -->
+        <div class="chatbot-suggestions" id="chatbot-suggestions">
+            <button class="chat-suggestion-pill" data-prompt="What are the best sci-fi films of all time?">🚀 Best sci-fi films</button>
+            <button class="chat-suggestion-pill" data-prompt="Recommend a film similar to Inception">🎭 Like Inception</button>
+            <button class="chat-suggestion-pill" data-prompt="Who won the Oscar for Best Picture in 2023?">🏆 Oscar 2023</button>
+            <button class="chat-suggestion-pill" data-prompt="What should I watch tonight? I like thrillers.">🎬 Tonight's pick</button>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chatbot-input-area">
+            <div class="chatbot-input-box">
+                <textarea
+                    id="chatbot-input"
+                    class="chatbot-textarea"
+                    placeholder="Ask about any movie, director, recommendation…"
+                    rows="1"
+                    aria-label="Chat message input"
+                    maxlength="1000"
+                ></textarea>
+                <button class="chatbot-send-btn" id="chatbot-send-btn" title="Send message" aria-label="Send message">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+            <div class="chatbot-footer-note">Pollinations AI · Free Movie Expert Mode</div>
+        </div>
+    </div>
+
     <script src="index.js?v=2"></script>
     <script src="app.js?v=2"></script>
+    <script src="chatbot.js?v=1"></script>
 </body>
 </html>
